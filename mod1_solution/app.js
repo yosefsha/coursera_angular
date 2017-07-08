@@ -5,27 +5,40 @@
 
   app.controller("LunchCheckController", LunchCheckController);
 
-  mainController.$inject = ['$scope','$log'];
+  LunchCheckController.$inject = ['$scope','$log'];
 
   function LunchCheckController($scope, $log){
-    $scope.lunch_list = "aa";
-    $scope.name_num_val = 0;
-    $scope.displayLunchMessage = function(){
-      $scope.name_num_val = count_lunch_list($scope.lunch_list);
-    }
+    $scope.lunch_list = "";
+    $scope.lunch_message = "";
+    $scope.DisplayLunchMessage = function(){
+      var items_count = CountItems($scope.lunch_list);
+    $scope.lunch_message = GetLunchMessage(items_count);
+    };
 
   };
 
-  var calc_numeric = function(text){
-    var i = 0;
-    var num_val=0;
-    while (text[i]) {
-    num_val += text.charCodeAt(i);
-    i++;
-    }
-    return num_val;
-  }
+function GetLunchMessage(items_count){
+    switch (true) {
+        case (items_count === 0): return "Please enter data first";
+          break;
+        case (items_count <= 3): return "Enjoy!"
+          break;
+        case (items_count > 3): return "Too much!";
+          break;
+        default: return "wrong data" //only negative val will reach here !
 
+      };
+    };
+
+function CountItems(data_string) {
+  if (data_string == null){
+    return 0;
+  }
+  if (data_string.length == 0){
+    return 0;
+  }
+  return data_string.split(",").length
+};
 
 
 })();

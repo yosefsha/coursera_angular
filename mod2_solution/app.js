@@ -10,17 +10,17 @@
   app.service('ToByList', ToByList);
   app.service('AlreadyBoughtList', AlreadyBoughtList);
 
-  ToByListController.$inject = ['ToByList','AlreadyBoughtList'];
+  ToByListController.$inject = ['$scope','$log','ToByList','AlreadyBoughtList'];
   AlreadyBoughtListController.$inject =['ToByList','AlreadyBoughtList'];
 
-  function ToByListController(ToByList, AlreadyBoughtList){
+  function ToByListController($scope,$log,ToByList, AlreadyBoughtList){
     var to_by_list = this;
     to_by_list.currentItemQuantity = "";
     to_by_list.currentItemName = "";
     to_by_list.items = ToByList.getItems();
 
-    to_by_list.add_item = function(){
-      ToByList.add_item(currentItemName, currentItemQuantity);
+    to_by_list.addItem = function(){
+      ToByList.addItem(to_by_list.currentItemName, to_by_list.currentItemQuantity);
     };
 
     to_by_list.removeItem = function (itemIndex) {
@@ -29,54 +29,122 @@
 
     // check item means mark as alreadt bought
     to_by_list.checkItem = function (itemIndex) {
-      item = ToByList.removeItem(itemIndex);
-      AlreadyBoughtList.add_item(item.name, item.quantity);
+      var item = ToByList.removeItem(itemIndex);
+      AlreadyBoughtList.addItem(item.name, item.quantity);
+      $log.log(AlreadyBoughtList);
     };
+
+    var initial_items = [
+      { name: "cookies", quantity: 10 },
+      { name: "bananas", quantity: 4 },
+      { name: "apples", quantity: 18 }
+    ]
+    for ( var item of initial_items ){
+      to_by_list.currentItemQuantity = item.quantity;
+      to_by_list.currentItemName = item.name;
+      to_by_list.addItem();
+    };
+    to_by_list.currentItemQuantity = "";
+    to_by_list.currentItemName = "";
+
   };
 
   function AlreadyBoughtListController(ToByList, AlreadyBoughtList){
-    var already_bought_list = this;
-    already_bought_list.items = AlreadyBoughtList.getItems();
+    var bought_list = this;
+    bought_list.items = AlreadyBoughtList.getItems();
 
-    already_bought_list.uncheckItem = function(itemIndex){
-      item = AlreadyBoughtList.removeItem(itemIndex);
-      ToByList.add_item(item.name, item.quantity)
+    bought_list.uncheckItem = function(itemIndex){
+      var item = AlreadyBoughtList.removeItem(itemIndex);
+      ToByList.addItem(item.name, item.quantity)
     };
 
   };
 
 
   function ToByList(){
-    var service = ShoppingListService();
-    return service;
-  }
+    var service = this;
+
+    // List of shopping items
+    var items = [];
+
+    service.addItem = function (itemName, quantity) {
+      var item = {
+        name: itemName,
+        quantity: quantity
+      };
+      items.push(item);
+    };
+
+    service.removeItem = function (itemIdex) {
+      var removed_item = items.splice(itemIdex, 1);
+      return removed_item[0];
+    };
+
+    service.getItems = function () {
+      return items;
+    };
+  };
 
   function AlreadyBoughtList(){
-    var service = ShoppingListService();
-    return service;
-  }
+    var service = this;
 
-  function ShoppingListService() {
-  var service = this;
+    // List of shopping items
+    var items = [];
 
-  // List of shopping items
-  var items = [];
-
-  service.addItem = function (itemName, quantity) {
-    var item = {
-      name: itemName,
-      quantity: quantity
+    service.addItem = function (itemName, quantity) {
+      var item = {
+        name: itemName,
+        quantity: quantity
+      };
+      items.push(item);
     };
-    items.push(item);
+
+    service.removeItem = function (itemIdex) {
+      var removed_item = items.splice(itemIdex, 1);
+      return removed_item[0];
+    };
+
+    service.getItems = function () {
+      return items;
+    };
   };
 
-  service.removeItem = function (itemIdex) {
-    items.splice(itemIdex, 1);
-  };
-
-  service.getItems = function () {
-    return items;
-  };
-};
 
 })();
+
+
+
+
+//
+// function ToByList(){
+//   var service = new ShoppingListService();
+//   return service;
+// };
+//
+// function AlreadyBoughtList(){
+//   var service = new ShoppingListService();
+//   return service;
+// };
+//
+// function ShoppingListService() {
+// var service = this;
+//
+// // List of shopping items
+// var items = [];
+//
+// service.addItem = function (itemName, quantity) {
+//   var item = {
+//     name: itemName,
+//     quantity: quantity
+//   };
+//   items.push(item);
+// };
+//
+// service.removeItem = function (itemIdex) {
+//   items.splice(itemIdex, 1);
+// };
+//
+// service.getItems = function () {
+//   return items;
+// };
+// };

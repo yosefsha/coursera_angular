@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="ShoppingList">
   <head>
     <meta charset="utf-8">
     <script src="https://code.angularjs.org/1.6.4/angular.min.js"></script>
@@ -19,23 +19,35 @@
     <title>Mode 2 solution</title>
   </head>
   <body>
-    <h1>Mode 2 solution</h1>
+    <h2>Module 2 solution</h2>
     <div id="to_by_container"
-      ng-controller="ToByListController as to_by_list">
-      <input type="text" ng-model="to_by_list.currentItemName" placeholder="item name">
-      <input type="text" ng-model="to_by_list.currentItemQuantity" placeholder="item quantity">
-      <button type="button" ng-click="to_by_list.addItem()" name="btn_add">Add Item</button>
+      ng-controller="ToByListController as by_list">
+      <h3>To By List</h3>
+      <input type="text" ng-model="by_list.currentItemName" placeholder="item name">
+      <input type="text" ng-model="by_list.currentItemQuantity" placeholder="item quantity">
+      <button type="button" ng-click="by_list.addItem()" name="btn_add">Add Item</button>
+
       <ol>
-        <li ng-repeat="item in to_by_list.items">
+        <li ng-repeat="item in by_list.items">
           {{item.quantity}} of {{item.name}}
+          <button type="button" ng-click="by_list.checkItem($index)" name="btn_check">Check Item</button>
         </li>
       </ol>
-
     </div>
 
     <div id="already_bought_container"
-      ng-controller="AlreadyBoughtListCntrl as already_bought_list">
+      ng-controller="AlreadyBoughtListController as already_bought_list">
+      <h3>Already Bought List</h3>
 
+
+      <ol>
+        <li ng-repeat="item in already_bought_list.items">
+          {{item.quantity}} of {{item.name}}
+          <button type="button" ng-if"item.name" ng-click="already_bought_list.uncheckItem($index)" name="btn_uncheck">Uncheck Item</button>
+        </li>
+      </ol>
     </div>
+    </div>
+
   </body>
 </html>

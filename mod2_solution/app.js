@@ -43,13 +43,14 @@
     $scope.checkItem = function (itemIndex) {
       var item = $scope.by_list.removeItem(itemIndex);
       $scope.bought_list.addItem(item.name, item.quantity);
-
     };
 
     var initial_items = [
       { name: "cookies", quantity: 10 },
       { name: "bananas", quantity: 4 },
-      { name: "apples", quantity: 18 }
+      { name: "apples", quantity: 18 },
+      { name: "soda", quantity: 8 },
+      { name: "cheese", quantity: 10 }
     ]
     for ( var item of initial_items ){
       $scope.currentItemQuantity = item.quantity;

@@ -18,36 +18,40 @@
     crossorigin="anonymous">
     <title>Mode 2 solution</title>
   </head>
+
   <body>
     <h2>Module 2 solution</h2>
-    <div id="to_by_container"
-      ng-controller="ToByListController as by_list">
-      <h3>To By List</h3>
-      <input type="text" ng-model="by_list.currentItemName" placeholder="item name">
-      <input type="text" ng-model="by_list.currentItemQuantity" placeholder="item quantity">
-      <button type="button" ng-click="by_list.addItem()" name="btn_add">Add Item</button>
+    <div id=all_lists ng-controller="ShoppingCheckController">
 
-      <ol>
-        <li ng-repeat="item in by_list.items">
-          {{item.quantity}} of {{item.name}}
-          <button type="button" ng-click="by_list.checkItem($index)" name="btn_check">Check Item</button>
-        </li>
-      </ol>
+      <div id="to_by_container" ng-controller="ToByListController">
+        <h3>To By List {{currentItemName}}</h3>
+        <input type="text" ng-model="currentItemName" placeholder="item name">
+        <input type="text" ng-model="currentItemQuantity" placeholder="item quantity">
+        <button type="button" ng-click="addItem()" name="btn_add">Add Item</button>
+
+        <ol>
+          <li ng-repeat="item in items">
+            {{item.quantity}} of {{item.name}}
+            <button type="button" ng-click="checkItem($index)" name="btn_check">Check Item</button>
+          </li>
+        </ol>
+      </div>
+
+      <div id="already_bought_container"
+        ng-controller="AlreadyBoughtListController">
+        <h3>Already Bought List</h3>
+
+
+        <ol>
+          <li ng-repeat="item in items">
+            {{item.quantity}} of {{item.name}}
+            <button type="button" ng-if"item.name" ng-click="uncheckItem($index)" name="btn_uncheck">Uncheck Item</button>
+          </li>
+        </ol>
+      </div>
+
     </div>
 
-    <div id="already_bought_container"
-      ng-controller="AlreadyBoughtListController as already_bought_list">
-      <h3>Already Bought List</h3>
-
-
-      <ol>
-        <li ng-repeat="item in already_bought_list.items">
-          {{item.quantity}} of {{item.name}}
-          <button type="button" ng-if"item.name" ng-click="already_bought_list.uncheckItem($index)" name="btn_uncheck">Uncheck Item</button>
-        </li>
-      </ol>
-    </div>
-    </div>
 
   </body>
 </html>

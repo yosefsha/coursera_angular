@@ -5,33 +5,45 @@
   //{ name: "cookies", quantity: 10 }
   var app = angular.module('ShoppingList', []);
 
+  app.controller("ShoppingCheckController", ShoppingCheckController);
   app.controller("ToByListController", ToByListController);
   app.controller("AlreadyBoughtListController", AlreadyBoughtListController);
-  app.service('ToByList', ToByList);
-  app.service('AlreadyBoughtList', AlreadyBoughtList);
+  app.factory('ShoppingListFactory',ShoppingListFactory);
 
-  ToByListController.$inject = ['$scope','$log','ToByList','AlreadyBoughtList'];
-  AlreadyBoughtListController.$inject =['ToByList','AlreadyBoughtList'];
+  ShoppingCheckController.$inject = ['$scope','ShoppingListFactory'];
 
-  function ToByListController($scope,$log,ToByList, AlreadyBoughtList){
-    var to_by_list = this;
-    to_by_list.currentItemQuantity = "";
-    to_by_list.currentItemName = "";
-    to_by_list.items = ToByList.getItems();
+  function ShoppingCheckController($scope, ShoppingListFactory) {
+    var vm = this;
 
-    to_by_list.addItem = function(){
-      ToByList.addItem(to_by_list.currentItemName, to_by_list.currentItemQuantity);
+    $scope.by_list = ShoppingListFactory();
+    $scope.bought_list = ShoppingListFactory();
+
+  };
+
+  function ToByListController($log, $scope){
+    var vm = this;
+    $scope.currentItemName = "";
+    $scope.currentItemQuantity = "";
+
+    $log.log($scope.by_list);
+    $log.log(vm);
+    $log.log($scope.by_list.getItems());
+
+    $scope.items = $scope.by_list.getItems();
+
+    $scope.addItem = function(){
+      $scope.by_list.addItem($scope.currentItemName, $scope.currentItemQuantity);
     };
 
-    to_by_list.removeItem = function (itemIndex) {
-      ToByList.removeItem(itemIndex);
+    $scope.removeItem = function (itemIndex) {
+      $scope.by_list.removeItem(itemIndex);
     };
 
     // check item means mark as alreadt bought
-    to_by_list.checkItem = function (itemIndex) {
-      var item = ToByList.removeItem(itemIndex);
-      AlreadyBoughtList.addItem(item.name, item.quantity);
-      $log.log(AlreadyBoughtList);
+    $scope.checkItem = function (itemIndex) {
+      var item = $scope.by_list.removeItem(itemIndex);
+      $scope.bought_list.addItem(item.name, item.quantity);
+
     };
 
     var initial_items = [
@@ -40,28 +52,28 @@
       { name: "apples", quantity: 18 }
     ]
     for ( var item of initial_items ){
-      to_by_list.currentItemQuantity = item.quantity;
-      to_by_list.currentItemName = item.name;
-      to_by_list.addItem();
+      $scope.currentItemQuantity = item.quantity;
+      $scope.currentItemName = item.name;
+      $scope.by_list.addItem($scope.currentItemName, $scope.currentItemQuantity);
     };
-    to_by_list.currentItemQuantity = "";
-    to_by_list.currentItemName = "";
+    // vm.currentItemQuantity = "";
+    // vm.currentItemName = "";
 
   };
 
-  function AlreadyBoughtListController(ToByList, AlreadyBoughtList){
-    var bought_list = this;
-    bought_list.items = AlreadyBoughtList.getItems();
+  function AlreadyBoughtListController($scope){
+    var vm = this;
+    $scope.items = $scope.bought_list.getItems();
 
-    bought_list.uncheckItem = function(itemIndex){
-      var item = AlreadyBoughtList.removeItem(itemIndex);
-      ToByList.addItem(item.name, item.quantity)
+    $scope.uncheckItem = function(itemIndex){
+      var item = $scope.$parent.bought_list.removeItem(itemIndex);
+      $scope.by_list.addItem(item.name, item.quantity)
     };
 
   };
 
 
-  function ToByList(){
+  function ShoppingListService(){
     var service = this;
 
     // List of shopping items
@@ -85,66 +97,11 @@
     };
   };
 
-  function AlreadyBoughtList(){
-    var service = this;
-
-    // List of shopping items
-    var items = [];
-
-    service.addItem = function (itemName, quantity) {
-      var item = {
-        name: itemName,
-        quantity: quantity
-      };
-      items.push(item);
+  function ShoppingListFactory(){
+    var factory = function(){
+      return new ShoppingListService();
     };
-
-    service.removeItem = function (itemIdex) {
-      var removed_item = items.splice(itemIdex, 1);
-      return removed_item[0];
-    };
-
-    service.getItems = function () {
-      return items;
-    };
+    return factory;
   };
-
 
 })();
-
-
-
-
-//
-// function ToByList(){
-//   var service = new ShoppingListService();
-//   return service;
-// };
-//
-// function AlreadyBoughtList(){
-//   var service = new ShoppingListService();
-//   return service;
-// };
-//
-// function ShoppingListService() {
-// var service = this;
-//
-// // List of shopping items
-// var items = [];
-//
-// service.addItem = function (itemName, quantity) {
-//   var item = {
-//     name: itemName,
-//     quantity: quantity
-//   };
-//   items.push(item);
-// };
-//
-// service.removeItem = function (itemIdex) {
-//   items.splice(itemIdex, 1);
-// };
-//
-// service.getItems = function () {
-//   return items;
-// };
-// };

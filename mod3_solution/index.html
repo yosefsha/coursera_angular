@@ -10,6 +10,14 @@
     <div id=narro_down_cntrlr ng-controller="NarrowItDownController as narrow_down">
 
       <input ng-model="narow_down.search_txt" type="text" name="" value="" placeholder="enter dearch word">
+      <button type="button" name="btn_search" ng-click="narrow_down.getMenueItems()">Search menu</button>
+
+      <ul>
+        <li ng-repeat="item in narrow_list.found">
+          {{item}}
+        </li>
+      </ul>
+
     </div>
 
   </body>

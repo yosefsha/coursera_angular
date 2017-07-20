@@ -5,6 +5,7 @@
   var app = angular.module('NarrowItDownApp', []);
   app.controller('NarrowItDownController', NarrowItDownController);
   app.service('MenuSearchService', MenuSearchService);
+  app.service('MenueFromServerService', MenueFromServerService);
   // app.directive('foundItems', FoundItems);
   // app.constant('ApiBasePath', "https://davids-restaurant.herokuapp.com");
   //
@@ -19,39 +20,63 @@
     vm.getMenueItems = function(){
       vm.found = MenuSearchService.getMatchedMenuItems(vm.search_txt);
     };
-
   };
 
-  MenuSearchService.inject = ['$http'];
+  MenuSearchService.inject = ['MenueFromServerService'];
 
-  function MenuSearchService($http){
+  function MenuSearchService(MenueFromServerService){
     var service = this;
+    service.allMenueItems = [];
+    service.matched_items = [];
 
     service.getMatchedMenuItems = function(searchTerm) {
-        var response = getMenueFromServer();
-        var allMenueItems = response.data;
-        var matched_items = [];
 
-        for (let item in allMenueItems){
-          if (searchTerm in item.name)
-          {
-            matched_items.push(item);
+        var promise = MenueFromServerService.getMenuCategories();
+        promise.then(function(response){
+          service.allMenueItems = response.data;
+
+          for (let item in service.allMenueItems){
+            if (searchTerm in item.name)
+            {
+              service.matched_items.push(item);
+            }
           }
-        }
+        }).catch(function(error){
+            console.log(error);
+        });
 
-        return matched_items;
+        return service.matched_items;
+      };
     };
 
-    function getMenueFromServer(){
+    MenueFromServerService.inject = ['$http'];
+
+    function MenueFromServerService($http){
+      var service = this;
+
+      service.getMenuCategories = function () {
       var response = $http({
         method: "GET",
         url: (ApiBasePath + "/categories.json")
+      })
+      return response;
+    };
+
+    service.getMenuForCategory = function (shortName) {
+      var response = $http({
+        method: "GET",
+        url: (ApiBasePath + "/menu_items.json"),
+        params: {
+          category: shortName
+        }
       });
 
       return response;
     };
 
   };
+
+
 
 
 

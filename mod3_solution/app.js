@@ -35,17 +35,21 @@
         promise.then(function(response){
           service.allMenueItems = response.data;
 
-          for (let item in service.allMenueItems){
-            if (searchTerm in item.name)
+          // for (let item in service.allMenueItems){
+          for (var i=0; i < service.allMenueItems.length; i++){
+            let item = service.allMenueItems[i];
+            if (item.name.indexOf(searchTerm) !== -1)
             {
               service.matched_items.push(item);
             }
           }
+
+          return service.matched_items;
+
         }).catch(function(error){
             console.log(error);
         });
 
-        return service.matched_items;
       };
     };
 

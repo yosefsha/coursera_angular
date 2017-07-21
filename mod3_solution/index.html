@@ -1,35 +1,36 @@
 <!DOCTYPE html>
 <html ng-app="NarrowItDownApp">
-<head>
-  <meta charset="utf-8">
-  <script src="https://code.angularjs.org/1.6.4/angular.min.js"></script>
-  <script src="app.js"></script>
+  <head>
+    <meta charset="utf-8">
+    <script src="https://code.angularjs.org/1.6.5/angular.min.js"></script>
+    <script src="app.js"></script>
 
-  <!-- Latest compiled and minified CSS -->
-  <link rel="stylesheet"
-  href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
-  integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
-  crossorigin="anonymous">
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet"
+    href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+    integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+    crossorigin="anonymous">
 
-  <!-- Optional theme -->
-  <link rel="stylesheet"
-  href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
-  integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp"
-  crossorigin="anonymous">
-  <title>Mode 2 solution</title>
-</head>
+    <!-- Optional theme -->
+    <link rel="stylesheet"
+    href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+    integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp"
+    crossorigin="anonymous">
+    <title>module 3 solution</title>
+  </head>
+
 
   <body>
     <h1>Module 3 solution</h1>
 
     <div id=narro_down_cntrlr ng-controller="NarrowItDownController as narrow_down">
 
-      <input ng-model="narow_down.search_txt" type="text" name="" value="" placeholder="enter search word">
+      <input ng-model="narrow_down.search_txt" type="text" name="" value="" placeholder="enter dearch word">
       <button type="button" name="btn_search" ng-click="narrow_down.getMenueItems()">Search menu</button>
 
       <ul>
-        <li ng-repeat="item in narrow_list.found">
-          {{item}}
+        <li ng-repeat="item in narrow_down.found">
+          {{item.name}}
         </li>
       </ul>
 

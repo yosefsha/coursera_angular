@@ -13,45 +13,59 @@
 
   function NarrowItDownController($log, MenuSearchService){
     var vm = this;
-
     vm.search_txt;
     vm.found = [];
 
     vm.getMenueItems = function(){
-      vm.found = MenuSearchService.getMatchedMenuItems(vm.search_txt);
+      var promise = MenuSearchService.getMatchedMenuItems(vm.search_txt);
+      promise.then(function(){
+        vm.found = promise.result
+      }).catch((error)=>{
+        console.log(error);
+      });
     };
   };
 
-  MenuSearchService.inject = ['MenueFromServerService'];
+  MenuSearchService.inject = ['$q', 'MenueFromServerService'];
 
-  function MenuSearchService(MenueFromServerService){
+  function MenuSearchService($q, MenueFromServerService){
     var service = this;
-    service.allMenueItems = [];
-    service.matched_items = [];
 
     service.getMatchedMenuItems = function(searchTerm) {
 
+        var defered = $q.defer();
+
+        var result = {
+          matched_items: []
+        }
+
         var promise = MenueFromServerService.getMenuCategories();
         promise.then(function(response){
-          service.allMenueItems = response.data;
+          var allMenueItems = response.data;
 
-          // for (let item in service.allMenueItems){
-          for (var i=0; i < service.allMenueItems.length; i++){
-            let item = service.allMenueItems[i];
+          for (var i=0; i < allMenueItems.length; i++){
+            let item = allMenueItems[i];
             if (item.name.indexOf(searchTerm) !== -1)
             {
-              service.matched_items.push(item);
+              result.matched_items.push(item);
             }
           }
 
-          return service.matched_items;
+          if (result.matched_items.length > 0){
+            defered.resolve(result);
+          }
+          else {
+            defered.reject(result);
+          }
+        //
+        // }).catch(function(error){
+        //     console.log(error);
+        // });
 
-        }).catch(function(error){
-            console.log(error);
-        });
-
-      };
-    };
+          return defered.promise;
+      })
+    }
+  }
 
     MenueFromServerService.inject = ['$http'];
 
@@ -62,9 +76,9 @@
       var response = $http({
         method: "GET",
         url: (ApiBasePath + "/categories.json")
-      })
-      return response;
-    };
+        })
+        return response;
+      };
 
     service.getMenuForCategory = function (shortName) {
       var response = $http({
@@ -72,81 +86,11 @@
         url: (ApiBasePath + "/menu_items.json"),
         params: {
           category: shortName
-        }
-      });
-
+          }
+        });
       return response;
     };
-
   };
 
 
-
-
-
-
 })();
-
-
-
-
-
-
-//
-// (function(){
-//   'use strict;'
-//
-//   var app = angular.module('NarrowItDownApp', []);
-//
-//   app.controller('NarrowItDownController', NarrowItDownController);
-//   app.service('MenuSearchService', MenuSearchService);
-//   app.directive('foundItems', FoundItems);
-//   app.constant('ApiBasePath', "https://davids-restaurant.herokuapp.com");
-//
-//   NarrowItDownController.$inject = ['$log', 'MenuSearchService'];
-//
-//   NarrowItDownController = function(MenuSearchService){
-//     var vm = this;
-//
-//     vm.search_txt;
-//     vm.found = [];
-//
-//     vm.getMenueItems = function(){
-//       vm.found = MenuSearchService.getMatchedMenuItems(vm.search_txt);
-//     };
-//
-//
-//   };
-//
-//   MenuSearchService.inject = ['$http'];
-//
-//   MenuSearchService = function($http){
-//     var service = this;
-//
-//     service.getMatchedMenuItems = function(searchTerm) {
-//         var response = getMenueFromServer();
-//         var allMenueItems = response.data;
-//         var matched_items = [];
-//
-//         for (let item in allMenueItems){
-//           if (searchTerm in item.name)
-//           {
-//             matched_items.push(item);
-//           }
-//         }
-//
-//         return matched_items;
-//     };
-//
-//     service.getMenueFromServer = function(){
-//       var response = $http({
-//         method: "GET",
-//         url: (ApiBasePath + "/categories.json")
-//       });
-//
-//       return response;
-//     };
-//
-//   };
-//
-// });

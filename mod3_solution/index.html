@@ -25,16 +25,20 @@
 
     <div id=narro_down_cntrlr ng-controller="NarrowItDownController as narrow_down">
 
-      <input ng-model="narrow_down.search_txt" type="text" name="" value="" placeholder="enter dearch word">
-      <button type="button" name="btn_search" ng-click="narrow_down.getMenueItems()">Search menu</button>
+      <input ng-model="narrow_down.search_txt"
+        type="text"
+        name="" value=""
+        placeholder="enter search word">
+      <button type="button"
+        name="btn_search"
+        ng-click="narrow_down.getMenueItems()">
+        Narrow It Down For Me!
+      </button>
 
-      <found-items found-list="narrow_down.found"></found-items>
+      <found-items
+      found-list="narrow_down.found"
+      on-remove="narrow_down.removeItem(index)"></found-items>
 
-      <ul>
-        <li ng-repeat="item in narrow_down.found">
-          {{item.name}}
-        </li>
-      </ul>
     </div>
 
   </body>

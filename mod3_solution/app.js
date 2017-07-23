@@ -7,23 +7,18 @@
   app.service('MenuSearchService', MenuSearchService);
   app.service('MenueFromServerService', MenueFromServerService);
   app.directive('foundItems', FoundItems);
-  // app.constant('ApiBasePath', "https://davids-restaurant.herokuapp.com");
-  //
   NarrowItDownController.$inject = ['$log', 'MenuSearchService'];
 
   function FoundItems() {
   var ddo = {
     templateUrl: 'foundItems.html',
     scope: {
-      foundList: '<'
+      foundList: '<',
+      onRemove: '&'
       }
     }
     return ddo;
   }
-      // onRemove: '&'  }
-    // controller: ShoppingListDirectiveController,
-    // controllerAs: 'list',
-    // bindToController: true
 
 
   function NarrowItDownController($log, MenuSearchService){
@@ -32,13 +27,17 @@
     vm.found = [];
 
     vm.getMenueItems = function(){
-      var promise = MenuSearchService.getMatchedMenuItems(vm.search_txt);
-      promise.then(function(result){
+      MenuSearchService.getMatchedMenuItems(vm.search_txt)
+      .then(function(result){
         vm.found = result.matched_items
       }).catch((error)=>{
-        console.log(error);
+        alert("Nothing Found!")
       });
     };
+
+    vm.removeItem = function(index){
+      vm.found.splice(index,1);
+    }
   };
 
 
@@ -54,19 +53,19 @@
           matched_items: []
         }
 
-        var promise = MenueFromServerService.getMenuCategories();
+        var promise = MenueFromServerService.getMenuItems();
         promise.then(function(response){
-          var allMenueItems = response.data;
+          var allMenueItems = response.data.menu_items;
 
           for (var i=0; i < allMenueItems.length; i++){
             let item = allMenueItems[i];
-            if (item.name.indexOf(searchTerm) !== -1)
+            if (item.description.indexOf(searchTerm) !== -1)
             {
               result.matched_items.push(item);
             }
           }
 
-          if (result.matched_items.length > 0){
+          if (result.matched_items.length > 0 && searchTerm.length > 0){
             defered.resolve(result);
           }
           else {
@@ -90,16 +89,24 @@
         return response;
       };
 
-    service.getMenuForCategory = function (shortName) {
-      var response = $http({
-        method: "GET",
-        url: (ApiBasePath + "/menu_items.json"),
-        params: {
-          category: shortName
-          }
-        });
-      return response;
-    };
+      service.getMenuItems = function () {
+        var response = $http({
+          method: "GET",
+          url: (ApiBasePath + "/menu_items.json")
+          })
+        return response;
+      };
+
+      service.getMenuForCategory = function (shortName) {
+        var response = $http({
+          method: "GET",
+          url: (ApiBasePath + "/menu_items.json"),
+          params: {
+            category: shortName
+            }
+          });
+        return response;
+      };
   };
 
 

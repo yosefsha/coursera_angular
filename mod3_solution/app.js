@@ -7,18 +7,24 @@
   app.service('MenuSearchService', MenuSearchService);
   app.service('MenueFromServerService', MenueFromServerService);
   app.directive('foundItems', FoundItems);
-
+  // app.constant('ApiBasePath', "https://davids-restaurant.herokuapp.com");
+  //
   NarrowItDownController.$inject = ['$log', 'MenuSearchService'];
 
   function FoundItems() {
-    var ddo = {
-      templateURL: 'foundItems.html',
-      scope:{
-        list: '=foundList'
+  var ddo = {
+    templateUrl: 'foundItems.html',
+    scope: {
+      items: '<'
       }
     }
     return ddo;
   }
+      // onRemove: '&'  }
+    // controller: ShoppingListDirectiveController,
+    // controllerAs: 'list',
+    // bindToController: true
+
 
   function NarrowItDownController($log, MenuSearchService){
     var vm = this;
@@ -27,16 +33,16 @@
 
     vm.getMenueItems = function(){
       var promise = MenuSearchService.getMatchedMenuItems(vm.search_txt);
-      promise.then(function(response){
-        vm.found = response.matched_items;
+      promise.then(function(result){
+        vm.found = result.matched_items
       }).catch((error)=>{
         console.log(error);
       });
     };
   };
 
-  MenuSearchService.inject = ['$q', 'MenueFromServerService'];
 
+  MenuSearchService.inject = ['$q', 'MenueFromServerService'];
   function MenuSearchService($q, MenueFromServerService){
     var service = this;
 
@@ -66,17 +72,13 @@
           else {
             defered.reject(result);
           }
-        //
-        // }).catch(function(error){
-        //     console.log(error);
-        // });
       })
-      return defered.promise;
+
+      return defered.promise
     }
   }
 
     MenueFromServerService.inject = ['$http'];
-
     function MenueFromServerService($http){
       var service = this;
 

@@ -28,12 +28,7 @@
       <input ng-model="narrow_down.search_txt" type="text" name="" value="" placeholder="enter dearch word">
       <button type="button" name="btn_search" ng-click="narrow_down.getMenueItems()">Search menu</button>
 
-      <ul>
-        <li ng-repeat="item in narrow_down.found">
-          {{item.name}}
-        </li>
-      </ul>
-
+      <found-items found-list="narrow_down.found"></found-items>
     </div>
 
   </body>

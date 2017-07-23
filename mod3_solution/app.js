@@ -6,10 +6,19 @@
   app.controller('NarrowItDownController', NarrowItDownController);
   app.service('MenuSearchService', MenuSearchService);
   app.service('MenueFromServerService', MenueFromServerService);
-  // app.directive('foundItems', FoundItems);
-  // app.constant('ApiBasePath', "https://davids-restaurant.herokuapp.com");
-  //
+  app.directive('foundItems', FoundItems);
+
   NarrowItDownController.$inject = ['$log', 'MenuSearchService'];
+
+  function FoundItems() {
+    var ddo = {
+      templateURL: 'foundItems.html',
+      scope:{
+        list: '=foundList'
+      }
+    }
+    return ddo;
+  }
 
   function NarrowItDownController($log, MenuSearchService){
     var vm = this;
@@ -18,8 +27,8 @@
 
     vm.getMenueItems = function(){
       var promise = MenuSearchService.getMatchedMenuItems(vm.search_txt);
-      promise.then(function(){
-        vm.found = promise.result
+      promise.then(function(response){
+        vm.found = response.matched_items;
       }).catch((error)=>{
         console.log(error);
       });
@@ -61,9 +70,8 @@
         // }).catch(function(error){
         //     console.log(error);
         // });
-
-          return defered.promise;
       })
+      return defered.promise;
     }
   }
 

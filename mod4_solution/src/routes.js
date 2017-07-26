@@ -17,8 +17,8 @@
 
       $stateProvider.state(
         'categories',{
-          url:'/categries',
-          templateUrl:'src/menuapp/templates/categries.html'
+          url:'/categories',
+          templateUrl:'src/menuapp/templates/categories.html'
         });
 
   }

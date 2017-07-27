@@ -1,6 +1,16 @@
 (function(){
+
   angular.module('MenuApp')
-  .component('MenuComponent',{
-    templateUrl:'src/menuapp/templates/home.html'
+  .component('categoriesList',{
+    templateUrl:'src/menuapp/templates/categoriesListComponent.html',
+    bindings:{
+      categories: '<'
+    }
   })
+
+  .component('anotherList',{
+    templateUrl:'src/menuapp/templates/anotherlist.html'
+  });
+
+
 })();

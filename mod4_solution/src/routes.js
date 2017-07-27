@@ -18,9 +18,15 @@
       $stateProvider.state(
         'categories',{
           url:'/categories',
-          templateUrl:'src/menuapp/templates/categories.html'
-        });
-
-  }
+          templateUrl:'src/menuapp/templates/categories.html',
+          controller: 'CategoriesController as categories',
+          resolve:{
+            categoriesData: ['menueSerchService', function(menueSerchService){
+                return menueSerchService.getMenuCategories();
+              }]
+          }
+        }
+      )
+  };
 
 })();

@@ -2,6 +2,6 @@
 <ul>
   <li ng-repeat="item in $ctrl.categories">{{item.name}}
     <span></span>
-    <a ui-sref="categories.items({menu_items:item.shortName})">;  see categoty items</a>
+    <a ui-sref="categories.items({category_short_name:item.short_name})">;  see categoty items</a>
   </li>
 </ul>

@@ -27,6 +27,7 @@ function MenuSearchService($q, MenueFromServerService){
       })
     return defered.promise
     }
+    
     service.getMenuForCategory = function(category_short_name){
       var defered = $q.defer();
       var data;

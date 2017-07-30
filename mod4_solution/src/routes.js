@@ -34,8 +34,9 @@
           templateUrl:'src/menuapp/templates/menu_items.html',
           controller: 'MenuItemsController as menu_items',
           resolve:{
-            categoryItemsData: ['MenuSearchService', function(MenuSearchService){
-                return MenuSearchService.getMenuForCategory(category_short_name)
+            menuItemsData: ['$stateParams', 'MenuSearchService',
+            function( $stateParams, MenuSearchService){
+              return MenuSearchService.getMenuForCategory($stateParams.category_short_name)
               }]
           }
         }

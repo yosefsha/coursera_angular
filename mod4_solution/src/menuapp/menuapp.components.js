@@ -8,6 +8,13 @@
     }
   })
 
+  .component('itemsList',{
+    templateUrl:'src/menuapp/templates/itemsListComponent.html',
+    bindings:{
+      menu_items: '<'
+    }
+  })
+
   .component('anotherList',{
     templateUrl:'src/menuapp/templates/anotherlist.html'
   });

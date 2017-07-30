@@ -4,16 +4,46 @@
 angular.module('MenuApp').service('MenuSearchService', MenuSearchService);
 angular.module('MenuApp').service('MenueFromServerService', MenueFromServerService);
 
-
-MenuSearchService.inject = ['$q', 'MenueFromServerService'];
+MenuSearchService.$inject = ['$q', 'MenueFromServerService'];
 
 function MenuSearchService($q, MenueFromServerService){
     var service = this;
 
     service.getMenuCategories = function() {
-      return MenueFromServerService.getMenuCategories();
-    }
+      // return MenueFromServerService.getMenuCategories()
+      var defered = $q.defer();
+      var data;
 
+      MenueFromServerService.getMenuCategories()
+      .then(function(response){
+        data = response.data
+
+        if (response.status == 200){
+          defered.resolve(data);
+        }
+        else {
+          defered.reject(data);
+        }
+      })
+    return defered.promise
+    }
+    service.getMenuForCategory = function(category_short_name){
+      var defered = $q.defer();
+      var data;
+
+      MenueFromServerService.getMenuForCategory(category_short_name)
+      .then(function(response){
+        data = response.data
+
+        if (response.status == 200){
+          defered.resolve(data);
+        }
+        else {
+          defered.reject(data);
+        }
+      })
+    return defered.promise
+    }
     service.getMatchedMenuItems = function(searchTerm) {
         var defered = $q.defer();
 
@@ -39,16 +69,15 @@ function MenuSearchService($q, MenueFromServerService){
           else {
             defered.reject(result);
           }
-      })
-
+        })
       return defered.promise
     }
   }
 
-  MenueFromServerService.inject = ['$http'];
+  MenueFromServerService.$inject = ['$http'];
   function MenueFromServerService($http){
     var service = this;
-
+    ApiBasePath = "https://davids-restaurant.herokuapp.com"
     service.getMenuCategories = function () {
       var response = $http({
         method: "GET",

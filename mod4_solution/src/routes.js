@@ -21,12 +21,27 @@
           templateUrl:'src/menuapp/templates/categories.html',
           controller: 'CategoriesController as categories',
           resolve:{
-            categoriesData: ['menueSerchService', function(menueSerchService){
-                return menueSerchService.getMenuCategories();
+            categoriesData: ['MenuSearchService', function(MenuSearchService){
+                return MenuSearchService.getMenuCategories()
               }]
           }
         }
       )
+
+      $stateProvider.state(
+        'categories.items',{
+          url:'/category_items/{category_short_name}',
+          templateUrl:'src/menuapp/templates/menu_items.html',
+          controller: 'MenuItemsController as menu_items',
+          resolve:{
+            categoryItemsData: ['MenuSearchService', function(MenuSearchService){
+                return MenuSearchService.getMenuForCategory(category_short_name)
+              }]
+          }
+        }
+      )
+
+
   };
 
 })();

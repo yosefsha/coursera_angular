@@ -27,16 +27,16 @@ function MenuSearchService($q, MenueFromServerService){
       })
     return defered.promise
     }
-    
+
     service.getMenuForCategory = function(category_short_name){
       var defered = $q.defer();
       var data;
 
       MenueFromServerService.getMenuForCategory(category_short_name)
       .then(function(response){
-        data = response.data
 
         if (response.status == 200){
+          data = response.data;
           defered.resolve(data);
         }
         else {

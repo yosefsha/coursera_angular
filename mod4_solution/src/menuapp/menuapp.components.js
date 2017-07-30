@@ -11,7 +11,8 @@
   .component('itemsList',{
     templateUrl:'src/menuapp/templates/itemsListComponent.html',
     bindings:{
-      menuItemsData: '<'
+      menuItemsData: '<',
+      categoryName: '<'
     }
   });
 

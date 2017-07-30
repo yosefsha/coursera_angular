@@ -1,5 +1,5 @@
-<h3>items in category:</h3>
+<h3>items in {{$ctrl.categoryName}} category:</h3>
 <ul>
-  <li ng-repeat="item in menu_items.menuItemsData">
+  <li ng-repeat="item in $ctrl.menuItemsData">
     {{item.name}}; {{item.id}}; {{item.description}}</li>
 </ul>

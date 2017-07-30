@@ -1,7 +1,9 @@
-<h3>our categories List Component</h3>
+<h3>Our categories List:</h3>
 <ul>
   <li ng-repeat="item in $ctrl.categories">{{item.name}}
     <span></span>
+    <!-- <a ui-sref="categories.items({category_short_name:item.short_name})">;  see categoty items</a> -->
     <a ui-sref="categories.items({category_short_name:item.short_name})">;  see categoty items</a>
+    <ui-view></ui-view>
   </li>
 </ul>

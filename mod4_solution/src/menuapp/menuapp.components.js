@@ -13,10 +13,6 @@
     bindings:{
       menuItemsData: '<'
     }
-  })
-
-  .component('anotherList',{
-    templateUrl:'src/menuapp/templates/anotherlist.html'
   });
 
 

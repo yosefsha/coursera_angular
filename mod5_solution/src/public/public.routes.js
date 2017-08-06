@@ -48,26 +48,27 @@ function routeConfig ($stateProvider) {
       controllerAs: 'registerCtrl',
 
     })
-    .state('public.user_info', {
-      url: '/user_info',
-      templateUrl: 'src/public/users/user_info.html',
-      controller: 'UserInfoController',
-      controllerAs: 'userInfoCtrl'
-    });
-
     // .state('public.user_info', {
     //   url: '/user_info',
-    //   templateProvider: function(UsersService){
-    //     if (UsersService.users.length > 0){
-    //       return 'src/public/users/user_info.html'
-    //       }
-    //     else {
-    //       return  'src/public/users/register.html'
-    //     }
-    //   },
+    //   templateUrl: 'src/public/users/user_info.html',
     //   controller: 'UserInfoController',
-    //   controllerAs: 'userInfoCtrl',
+    //   controllerAs: 'userInfoCtrl'
     // });
+
+    .state('public.user_info', {
+      url: '/user_info',
+      templateProvider: ['UsersService', function(UsersService){
+        if (UsersService.users.length > 0){
+          return '<user-info user=$ctrl.currentUser></user-info>'
+          }
+        else {
+          return '<new-user-info></new-user-info>'
+        }
+      }],
+
+    });
+
+
 
 }
 })();

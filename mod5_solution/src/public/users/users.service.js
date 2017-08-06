@@ -29,11 +29,13 @@ function UsersService() {
     return service.users;
   }
 
+
   service.getUser = function(){
+    //currently returns last element further dev to get by name or other params
     if (service.users.length > 0){
-      return service.users[0]
+      return service.users[service.users.length - 1];
+      }
     }
-  }
 
 }
 

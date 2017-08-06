@@ -33,7 +33,7 @@
         <br>
 
     <input type="email" name="email" placeholder="Email"
-      ng-model="registerCtrl.user.email"
+      ng-model="registerCtrl.newUser.email"
       required>
       <span ng-if="regForm.email.$invalid && regForm.email.$touched">
         Must be a valid email address: handle@domain format
@@ -41,7 +41,7 @@
       <br>
 
     <input type="text" name="phone" placeholder="Phone ###-###-####"
-      ng-model="registerCtrl.user.phone"
+      ng-model="registerCtrl.newUser.phone"
       pattern="(\d{3})-(\d{3})-(\d{4})">
       <span ng-if="regForm.phone.$invalid && regForm.phone.$touched">
         Phone must be in the format ###-###-####.
@@ -56,6 +56,11 @@
         <span ng-if="regForm.favorite_item.$invalid && regForm.email.$touched">
           Must be 1-5 digits
         </span>
+        <span ng-if="registerCtrl.wrong_data"
+         class="alert alert-danger"
+         style="margin: 100px;">
+          No such menu number exists!
+        </span>
         <br>
 
     <button
@@ -63,8 +68,9 @@
       ng-click="registerCtrl.submit()"
       style="color: black">Submit</button>
 
-      <div style="margin-top: 10px;">
-        Form valid? {{ regForm.$valid }}
-      </div>
+      <span ng-if="registerCtrl.data_saved"
+       class="alert alert-success">
+        Your data has been saved.
+      </span>
   </form>
 </fieldset>

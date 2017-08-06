@@ -1,0 +1,19 @@
+<div class="container ">
+  <h2>User Info</h2>
+  <div>: {{userInfoCtrl.currentUser.email}}<div>
+
+  <div>last_name: {{userInfoCtrl.currentUser.last_name}}</div>
+  <div>
+    phone:{{userInfoCtrl.currentUser.phone}}
+  </div>
+  <div>first_name: {{userInfoCtrl.currentUser.first_name}}</div>
+  <div>
+    phone:{{userInfoCtrl.currentUser.phone}}
+  </div>
+
+  <img class="img-responsive" width="250" height="150"
+   ng-src="{{userInfoCtrl.ApiPath}}/images/{{userInfoCtrl.currentUser.favorite_item}}.jpg"
+   alt="{{userInfoCtrl.favoriteItem.name}}">
+   <span>{{userInfoCtrl.favoriteItem.name}}</span>
+   <span>{{userInfoCtrl.currentUser.favorite_item}}</span>
+</div>

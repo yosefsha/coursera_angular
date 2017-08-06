@@ -43,6 +43,8 @@ function MenuService($http, $q, ApiPath) {
         console.log("status: " + response.status)
         defered.reject(data);
       }
+    }).catch(function(response){
+      defered.reject(data);
     })
 
   return defered.promise

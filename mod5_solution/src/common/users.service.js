@@ -1,10 +1,10 @@
 (function (){
 'use strict;'
 
-angular.module('public')
+angular.module('common')
 .service('UsersService', UsersService);
 
-// UsersService.$inject = [''];
+UsersService.$inject = [''];
 
 function UsersService() {
   var service = this;
@@ -22,19 +22,20 @@ function UsersService() {
       "favorite_item": favorite_item
     }
     service.users.push(user)
-    console.log("user added: " + service.users)
-    console.log(service.users);
-  }
-  service.getAll = function(){
-    return service.users;
   }
 
   service.getUser = function(){
+    //currently returns last element further dev to get by name or other params
     if (service.users.length > 0){
-      return service.users[0]
+      return service.users[service.users.length - 1];
+      }
     }
-  }
 
+
+  service.getAll = function(){
+    return service.users;
+  }
+//
 }
 
 

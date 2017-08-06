@@ -9,6 +9,8 @@ RegistrationController.$inject = ['UsersService','MenuService'];
 function RegistrationController(UsersService, MenuService) {
   var $ctrl = this;
 
+  $ctrl.wrong_data = false;
+  $ctrl.data_saved = false;
   $ctrl.newUser = {
     "first_name": undefined,
     "last_name":undefined,
@@ -25,9 +27,12 @@ function RegistrationController(UsersService, MenuService) {
                               $ctrl.newUser.email,
                               $ctrl.newUser.phone,
                               $ctrl.newUser.favorite_item);
-
+          $ctrl.wrong_data = false;
+          $ctrl.data_saved = true;
         }, function(rejected){
           console.log("wrong user data");
+          $ctrl.data_saved = false;
+          $ctrl.wrong_data = true;
         }
       )
   }

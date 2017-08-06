@@ -40,6 +40,18 @@ function routeConfig ($stateProvider) {
           return MenuService.getMenuItems($stateParams.category);
         }]
       }
+    })
+    .state('public.register', {
+      url: '/register',
+      templateUrl: 'src/public/menu/register.html',
+      controller: 'RegisterController',
+      controllerAs: 'registerCtrl',
+      // resolve: {
+      //   menuCategories: ['MenuService','UsersService' function (MenuService, UsersService) {
+      //     return MenuService.getCategories();
+      //   }]
+      // }
     });
+
 }
 })();

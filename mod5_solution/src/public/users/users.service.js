@@ -1,10 +1,10 @@
 (function (){
 'use strict;'
 
-angular.module('common')
+angular.module('public')
 .service('UsersService', UsersService);
 
-UsersService.$inject = [''];
+// UsersService.$inject = [''];
 
 function UsersService() {
   var service = this;
@@ -22,11 +22,11 @@ function UsersService() {
       "favorite_item": favorite_item
     }
     service.users.push(user)
-    
+    console.log("user added: " + service.users)
   }
-  service.getAll(
+  service.getAll = function(){
     return service.users;
-  )
+  }
 
 }
 

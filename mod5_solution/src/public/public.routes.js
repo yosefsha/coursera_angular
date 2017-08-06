@@ -43,14 +43,10 @@ function routeConfig ($stateProvider) {
     })
     .state('public.register', {
       url: '/register',
-      templateUrl: 'src/public/menu/register.html',
-      controller: 'RegisterController',
+      templateUrl: 'src/public/users/register.html',
+      controller: 'RegistrationController',
       controllerAs: 'registerCtrl',
-      // resolve: {
-      //   menuCategories: ['MenuService','UsersService' function (MenuService, UsersService) {
-      //     return MenuService.getCategories();
-      //   }]
-      // }
+
     });
 
 }
